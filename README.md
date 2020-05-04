@@ -2,6 +2,7 @@
 A step counter tracking application built using Flutter
 
 Below are the screenshots of the app
+
 ![](Walkman.JPG)
 
 Getting Started
