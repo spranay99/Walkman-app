@@ -14,8 +14,6 @@ import 'package:walkman/chart1.dart';
 import 'dart:ui' as ui;
 import 'item.dart';
 
-
-
 String _stepCountValue = '0';
 String _stepCountValueTemp = '0';
 String _day1Steps = '7654';
@@ -38,10 +36,9 @@ String _day3Cal = '224.1';
 String _day4Cal = '176.85';
 String _day5Cal = '68.58';
 String _day6Cal = '100';
-var now = new DateTime.now();
+DateTime now;
 var today = now.day;
 var hour = now.hour;
-
 
 void _enablePlatformOverrideForDesktop() {
   if (!kIsWeb && (Platform.isWindows || Platform.isLinux)) {
@@ -75,7 +72,7 @@ class _MyAppState extends State<MyApp> {
   double _convert;
   double _kmx;
   double burnedx;
-  double percent=0.0;
+  double percent = 0.0;
   int _goal;
   int _goaltemp;
 
@@ -87,6 +84,7 @@ class _MyAppState extends State<MyApp> {
     initConnectivity();
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    now = new DateTime.now();
   }
 
   // Connectivity
@@ -126,43 +124,45 @@ class _MyAppState extends State<MyApp> {
     var hour = now.hour;
     var min = now.minute;
     var sec = now.second;
-    if (hour.toString() == '0' && min.toString() == '0' && sec.toString() == '0'){
+    if (hour.toString() == '0' &&
+        min.toString() == '0' &&
+        sec.toString() == '0') {
       setState(() {
-      _day1Steps = _day2Steps;
-      _day2Steps = _day3Steps;
-      _day3Steps = _day4Steps;
-      _day4Steps = _day5Steps;
-      _day5Steps = _day6Steps;
-      _day6Steps = _stepCountValue;
-      _day1Km = _day2Km;
-      _day2Km = _day3Km;
-      _day3Km = _day4Km;
-      _day4Km = _day5Km;
-      _day5Km = _day6Km;
-      _day6Km = _stepCountValue;
-      _day1Cal = _day2Cal;
-      _day2Cal = _day3Cal;
-      _day3Cal = _day4Cal;
-      _day4Cal = _day5Cal;
-      _day5Cal = _day6Cal;
-      _day6Cal = _stepCountValue;
-      // int stepCountValue = 0;
-      int stepCountValue = 0;
-      _stepCountValue = "$stepCountValue";
-      _stepCountValueTemp = _stepCountValue;
-      print('$stepCountValue');
-    });
+        _day1Steps = _day2Steps;
+        _day2Steps = _day3Steps;
+        _day3Steps = _day4Steps;
+        _day4Steps = _day5Steps;
+        _day5Steps = _day6Steps;
+        _day6Steps = _stepCountValue;
+        _day1Km = _day2Km;
+        _day2Km = _day3Km;
+        _day3Km = _day4Km;
+        _day4Km = _day5Km;
+        _day5Km = _day6Km;
+        _day6Km = _stepCountValue;
+        _day1Cal = _day2Cal;
+        _day2Cal = _day3Cal;
+        _day3Cal = _day4Cal;
+        _day4Cal = _day5Cal;
+        _day5Cal = _day6Cal;
+        _day6Cal = _stepCountValue;
+        // int stepCountValue = 0;
+        int stepCountValue = 0;
+        _stepCountValue = "$stepCountValue";
+        _stepCountValueTemp = _stepCountValue;
+        print('$stepCountValue');
+      });
     }
     setState(() {
-      if (_goal==null){
+      if (_goal == null) {
         _goal = 8000;
       }
-        _stepCountValue = "$stepCountValue";
+      _stepCountValue = "$stepCountValue";
 
-      if (stepCountValue>_goal){
-        _stepCountValueTemp = _goal.toString(); // Temp is used to avoi the percentage from crossing '1.0'
-      }
-      else{
+      if (stepCountValue > _goal) {
+        _stepCountValueTemp = _goal
+            .toString(); // Temp is used to avoi the percentage from crossing '1.0'
+      } else {
         _stepCountValue = _stepCountValue;
       }
     });
@@ -171,8 +171,7 @@ class _MyAppState extends State<MyApp> {
     double y = (dist + .0);
 
     setState(() {
-      number =
-          y;
+      number = y;
     });
 
     var long3 = (number);
@@ -229,9 +228,11 @@ class _MyAppState extends State<MyApp> {
 
   //function to determine the distance run in kilometers using number of steps
   void getDistanceRun(double number) {
-    var distance = ((number * 78) / 100000); // assuming that a person walks 78km per 1 Lakh steps
+    var distance = ((number * 78) /
+        100000); // assuming that a person walks 78km per 1 Lakh steps
     distance = num.parse(distance.toStringAsFixed(2));
-    var distancekmx = distance * 34; // assuming a person burns 34 calories per km
+    var distancekmx =
+        distance * 34; // assuming a person burns 34 calories per km
     distancekmx = num.parse(distancekmx.toStringAsFixed(2));
     //print(distance.runtimeType);
     setState(() {
@@ -324,33 +325,31 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  showAlertDialog(BuildContext context) {  
-  // Create button  
-  Widget okButton = FlatButton(  
-    child: Text("OK"),  
-    onPressed: () {  
-      Navigator.of(context).pop();  
-    },  
-  );  
-  
-  // Create AlertDialog  
-  AlertDialog alert = AlertDialog(  
-    title: Text("Network Connectivity Status"),  
-    content: Text("$_connectionStatus"),  
-    actions: [  
-      okButton,  
-    ],  
-  );  
-  
-  // show the dialog  
-  showDialog(  
-    context: context,  
-    builder: (BuildContext context) {  
-      return alert;  
-    },  
-  );  
-}  
+  showCustomAlertDialog() {
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
 
+    // Create AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Network Connectivity Status"),
+      content: Text("$_connectionStatus"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -361,35 +360,47 @@ class _MyAppState extends State<MyApp> {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
       home: new Scaffold(
-        backgroundColor: Colors.black,
-        appBar: new AppBar(
-          title: const Text('Walkman'),
-          backgroundColor: Colors.blue,
-          elevation: 4.0,
-        ),     
-        body: 
-        new ListView(
-          padding: EdgeInsets.only(right: 5.0,bottom: 5.0,left: 5.0,top: 50.0),
-          children: <Widget>[
-            
-            Container(
-              padding: EdgeInsets.only(top: 10.0),
-              width: 250,
-              height: 250,
-              decoration: BoxDecoration(
-                  // gradient: LinearGradient(
-                  //   begin: Alignment
-                  //       .bottomCenter, //cambia la iluminacion del degradado
-                  //   end: Alignment.topCenter,
-                  //   colors: [Color(0xFFA9F5F2), Color(0xFF01DFD7)],
-                  // ),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(27.0),
-                    bottomRight: Radius.circular(27.0),
-                    topLeft: Radius.circular(27.0),
-                    topRight: Radius.circular(27.0),
-                  )),
-                   child: new CircularPercentIndicator(
+          backgroundColor: Colors.black,
+          appBar: new AppBar(
+            title: const Text('Walkman'),
+            backgroundColor: Colors.blue,
+            elevation: 4.0,
+            actions: [
+              Builder(
+                builder: (BuildContext context) {
+                  return IconButton(
+                    icon: Icon(
+                      Icons.network_check,
+                      color: Colors.black87,
+                    ),
+                    onPressed: () {
+                      initConnectivity();
+                      var snackbar = SnackBar(
+                        content: Text("Checking connectivity"),
+                        action: SnackBarAction(
+                          label: 'Dismiss',
+                          onPressed: () {},
+                        ),
+                      );
+                      Scaffold.of(context).showSnackBar(snackbar);
+                    },
+                  );
+                },
+              )
+            ],
+          ),
+          body: new ListView(
+            padding:
+                EdgeInsets.only(right: 5.0, bottom: 5.0, left: 5.0, top: 50.0),
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(top: 10.0),
+                width: 250,
+                height: 250,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(27),
+                ),
+                child: new CircularPercentIndicator(
                   radius: 200.0,
                   lineWidth: 13.0,
                   animation: true,
@@ -412,36 +423,41 @@ class _MyAppState extends State<MyApp> {
                           child: Text(
                             '$_stepCountValue',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30.0,
-                                color: Colors.blue),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30.0,
+                              color: Colors.blue,
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  percent: double.parse((int.parse(_stepCountValueTemp)/_goal).toString()),
-                  footer: 
-                  new Text(
+                  percent: double.parse(
+                      (int.parse(_stepCountValueTemp) / _goal).toString()),
+                  footer: new Text(
                     "Goal: $_goal",
                     style: new TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12.0,
-                        color: Colors.purple),
+                      fontWeight: FontWeight.bold,
+                      fontSize: MediaQuery.of(context).textScaleFactor * 12,
+                      color: Colors.purple,
+                    ),
                   ),
                   circularStrokeCap: CircularStrokeCap.round,
                   progressColor: Colors.purpleAccent,
                 ),
-            ),
-             Divider(
+              ),
+              Divider(
                 height: 50.0,
               ),
-                            Container(
+              Container(
                 width: 80,
                 height: 100,
-                padding: EdgeInsets.only(left: 25.0, top: 10.0, bottom: 10.0),
+                padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
                 color: Colors.transparent,
-                child: Row(
+                // Change Row to Wrap
+                // Can help fit on smaller displays and avoid VerticalDividers
+                child: Wrap(
+                  spacing: 20,
                   children: <Widget>[
                     new Container(
                       child: new Card(
@@ -459,15 +475,18 @@ class _MyAppState extends State<MyApp> {
                             "$_km Km",
                             textAlign: TextAlign.right,
                             style: new TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 14.0),
+                              fontWeight: FontWeight.bold,
+                              fontSize:
+                                  MediaQuery.of(context).textScaleFactor * 14,
+                            ),
                           ),
                         ),
                         color: Colors.white54,
                       ),
                     ),
-                    VerticalDivider(
-                      width: 20.0,
-                    ),
+                    // VerticalDivider(
+                    //   width: 20.0,
+                    // ),
                     new Container(
                       child: new Card(
                         child: Container(
@@ -484,9 +503,9 @@ class _MyAppState extends State<MyApp> {
                         color: Colors.transparent,
                       ),
                     ),
-                    VerticalDivider(
-                      width: 20.0,
-                    ),
+                    // VerticalDivider(
+                    //   width: 20.0,
+                    // ),
                     new Container(
                       child: new Card(
                         child: Container(
@@ -511,10 +530,12 @@ class _MyAppState extends State<MyApp> {
               ),
               Container(
                 padding: EdgeInsets.only(top: 2.0),
-                width: 150, //ancho
-                height: 30, //largo tambien por numero height: 300
-                color: Colors.transparent,
-                child: Row(
+                width: 150,
+                height: 30,
+                // color: Colors.transparent,
+                child: Wrap(
+                  // Helps the children fit on the screen
+                  // Avoid use of Vertical Divider
                   children: <Widget>[
                     new Container(
                       padding: EdgeInsets.only(left: 40.0),
@@ -532,9 +553,9 @@ class _MyAppState extends State<MyApp> {
                         color: Colors.purple,
                       ),
                     ),
-                    VerticalDivider(
-                      width: 20.0,
-                    ),
+                    // VerticalDivider(
+                    //   width: 20.0,
+                    // ),
                     new Container(
                       padding: EdgeInsets.only(left: 35.0),
                       child: new Card(
@@ -543,17 +564,18 @@ class _MyAppState extends State<MyApp> {
                             "$_calories kCal",
                             textAlign: TextAlign.right,
                             style: new TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14.0,
-                                color: Colors.white),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.0,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                         color: Colors.red,
                       ),
                     ),
-                    VerticalDivider(
-                      width: 5.0,
-                    ),
+                    // VerticalDivider(
+                    //   width: 5.0,
+                    // ),
                     new Container(
                       padding: EdgeInsets.only(left: 40.0),
                       child: new Card(
@@ -577,138 +599,162 @@ class _MyAppState extends State<MyApp> {
           ),
           floatingActionButton: Builder(
             builder: (context) => FloatingActionButton(
-              child: Icon(Icons.settings),
-              onPressed: () { showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return Container (
-                    height: 370,
-                    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 40.0),
-                    child: Column(
-                      children: <Widget>[
-                        Text('Reset your goal.',
-                          style: TextStyle(fontSize: 18.0)
-                        ),
-                        SizedBox(height: 20.0),
-                        
-                        TextFormField(
-                          decoration:  InputDecoration(
-                            enabledBorder: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.purple, width: 2.0)
-                            ),
+                child: Icon(Icons.settings),
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Container(
+                          // Removed code that caused overflow on smaller devices
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          padding: EdgeInsets.symmetric(
+                              vertical: 5.0, horizontal: 40.0),
+                          child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10.0),
+                                child: Text(
+                                  'Reset your goal',
+                                  style: TextStyle(fontSize: 18.0),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.purple, width: 2.0),
+                                    ),
+                                  ),
+                                  validator: (val) =>
+                                      val.isEmpty ? 'Please Enter Goal' : null,
+                                  onChanged: (val) => setState(
+                                    () => _goaltemp = int.parse(val),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: RaisedButton(
+                                  color: Colors.pink[400],
+                                  child: Text('Confirm'),
+                                  textColor: Colors.white,
+                                  onPressed: () =>
+                                      setState(() => _goal = _goaltemp),
+                                ),
+                              ),
+                              // Eliminate redundant code
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: FlatButton.icon(
+                                  textColor: Colors.black,
+                                  onPressed: showCustomAlertDialog,
+                                  icon: Icon(
+                                    Icons.network_check,
+                                    color: Colors.black,
+                                  ),
+                                  label: Text(
+                                    'Check Network Connectivity',
+                                  ),
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: FlatButton.icon(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      new MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Steps(),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.insert_chart,
+                                    color: Colors.black,
+                                  ),
+                                  label: Text(
+                                    'Steps Statistics',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              FlatButton.icon(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          new Distance(),
+                                    ),
+                                  );
+                                },
+                                textColor: Colors.black,
+                                icon: Icon(
+                                  Icons.directions_walk,
+                                  color: Colors.black,
+                                ),
+                                label: Text('Distance Statistics'),
+                              ),
+                              FlatButton.icon(
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    new MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Calories()),
+                                  );
+                                },
+                                textColor: Colors.black,
+                                icon: Icon(Icons.fastfood, color: Colors.black),
+                                label: Text('Calories Statistics'),
+                              )
+                            ],
                           ),
-                          validator: (val) => val.isEmpty ? 'Please Enter Goal' : null,
-                          onChanged: (val) => setState(
-                            () => _goaltemp = int.parse(val),
-                          ),
-                        ),
-                        Divider(
-                          height: 4,
-                        ),
-                        RaisedButton( 
-                          color: Colors.pink[400],
-                          child: Text(
-                            'Confirm',
-                            style: TextStyle(color: Colors.white)
-                          ),
-                          onPressed: () => setState(() => _goal = _goaltemp)
-                        ),
-                        Divider(
-                          height: 4,
-                        ),
-                        FlatButton.icon(
-                          onPressed: () {
-                            showAlertDialog(context);
-                          },
-                          icon: Icon(Icons.network_check, color: Colors.black), 
-                          label: Text('Check Network Connectivity', style: TextStyle(color: Colors.black)),
-                        ),
-                        Divider(
-                          height: 4,
-                        ),
-                        FlatButton.icon(
-                          onPressed: () {
-                            Navigator.push(
-                              context, 
-                              MaterialPageRoute( 
-                                builder: (BuildContext context) => new Steps())
-                              );
-                          },
-                          icon: Icon(Icons.insert_chart,color: Colors.black), 
-                          label: Text('Steps Statistics', style: TextStyle(color: Colors.black)),
-                        ),
-                        Divider(
-                          height: 4,
-                        ),
-                        FlatButton.icon(
-                          onPressed: () {
-                            Navigator.push(
-                              context, 
-                              MaterialPageRoute( 
-                                builder: (BuildContext context) => new Distance())
-                              );
-                          },
-                          icon: Icon(Icons.directions_walk,color: Colors.black), 
-                          label: Text('Distance Statistics', style: TextStyle(color: Colors.black)),
-                        ),
-                        Divider(
-                          height: 4,
-                        ),
-                        FlatButton.icon(
-                          onPressed: () {
-                            Navigator.push(
-                              context, 
-                              MaterialPageRoute( 
-                                builder: (BuildContext context) => new Calories())
-                              );
-                          },
-                          icon: Icon(Icons.fastfood,color: Colors.black), 
-                          label: Text('Calories Statistics', style: TextStyle(color: Colors.black)),
-                        )
-                      ]
-                    )
-                  );
-                }
-              );
-            }
-          ),
-        )
-      ),
+                        );
+                      });
+                }),
+          )),
     );
   }
 }
 
-
 class Steps extends StatelessWidget {
   final List<ItemSeries> data = [
     ItemSeries(
-      day: (now.day-6).toString(),
+      day: (now.day - 6).toString(),
       item: int.parse(_day1Steps),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     ItemSeries(
-      day: (now.day-5).toString(),
+      day: (now.day - 5).toString(),
       item: int.parse(_day2Steps),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     ItemSeries(
-     day: (now.day-4).toString(),
+      day: (now.day - 4).toString(),
       item: int.parse(_day3Steps),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     ItemSeries(
-      day: (now.day-3).toString(),
+      day: (now.day - 3).toString(),
       item: int.parse(_day4Steps),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     ItemSeries(
-      day: (now.day-2).toString(),
+      day: (now.day - 2).toString(),
       item: int.parse(_day5Steps),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     ItemSeries(
-      day: (now.day-1).toString(),
+      day: (now.day - 1).toString(),
       item: int.parse(_day6Steps),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
@@ -721,49 +767,46 @@ class Steps extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: new AppBar(
-        // title: new Text('${widget.day1}'),
-        title: const Text('Steps Statistics'),
-        backgroundColor: Colors.blue,
-        elevation: 4.0,
-      ),     
-      body: Center(
-      child: ChartSteps(data: data)
-    )
-    );
+        backgroundColor: Colors.black,
+        appBar: new AppBar(
+          // title: new Text('${widget.day1}'),
+          title: const Text('Steps Statistics'),
+          backgroundColor: Colors.blue,
+          elevation: 4.0,
+        ),
+        body: Center(child: ChartSteps(data: data)));
   }
 }
 
 class Distance extends StatelessWidget {
   final List<Item1Series> data1 = [
     Item1Series(
-      day: (now.day-6).toString(),
+      day: (now.day - 6).toString(),
       item: double.parse(_day1Km),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     Item1Series(
-      day: (now.day-5).toString(),
+      day: (now.day - 5).toString(),
       item: double.parse(_day2Km),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     Item1Series(
-     day: (now.day-4).toString(),
+      day: (now.day - 4).toString(),
       item: double.parse(_day3Km),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     Item1Series(
-      day: (now.day-3).toString(),
+      day: (now.day - 3).toString(),
       item: double.parse(_day4Km),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     Item1Series(
-      day: (now.day-2).toString(),
+      day: (now.day - 2).toString(),
       item: double.parse(_day5Km),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     Item1Series(
-      day: (now.day-1).toString(),
+      day: (now.day - 1).toString(),
       item: double.parse(_day6Km),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
@@ -776,48 +819,45 @@ class Distance extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: new AppBar(
-        title: const Text('Distance Statistics'),
-        backgroundColor: Colors.blue,
-        elevation: 4.0,
-      ),     
-      body: Center(
-      child: ChartSteps1(data1: data1)
-    )
-    );
+        backgroundColor: Colors.black,
+        appBar: new AppBar(
+          title: const Text('Distance Statistics'),
+          backgroundColor: Colors.blue,
+          elevation: 4.0,
+        ),
+        body: Center(child: ChartSteps1(data1: data1)));
   }
 }
 
 class Calories extends StatelessWidget {
   final List<Item1Series> data1 = [
     Item1Series(
-      day: (now.day-6).toString(),
+      day: (now.day - 6).toString(),
       item: double.parse(_day1Cal),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     Item1Series(
-      day: (now.day-5).toString(),
+      day: (now.day - 5).toString(),
       item: double.parse(_day2Cal),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     Item1Series(
-     day: (now.day-4).toString(),
+      day: (now.day - 4).toString(),
       item: double.parse(_day3Cal),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     Item1Series(
-      day: (now.day-3).toString(),
+      day: (now.day - 3).toString(),
       item: double.parse(_day4Cal),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     Item1Series(
-      day: (now.day-2).toString(),
+      day: (now.day - 2).toString(),
       item: double.parse(_day5Cal),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
     Item1Series(
-      day: (now.day-1).toString(),
+      day: (now.day - 1).toString(),
       item: double.parse(_day6Cal),
       barColor: charts.ColorUtil.fromDartColor(Colors.blue),
     ),
@@ -830,16 +870,13 @@ class Calories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: new AppBar(
-        // title: new Text('${widget.day1}'),
-        title: const Text('Calories Statistics'),
-        backgroundColor: Colors.blue,
-        elevation: 4.0,
-      ),     
-      body: Center(
-      child: ChartSteps1(data1: data1)
-    )
-    );
+        backgroundColor: Colors.black,
+        appBar: new AppBar(
+          // title: new Text('${widget.day1}'),
+          title: const Text('Calories Statistics'),
+          backgroundColor: Colors.blue,
+          elevation: 4.0,
+        ),
+        body: Center(child: ChartSteps1(data1: data1)));
   }
 }
